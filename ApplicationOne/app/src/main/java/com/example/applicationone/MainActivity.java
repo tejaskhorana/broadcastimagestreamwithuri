@@ -37,19 +37,29 @@ public class MainActivity extends AppCompatActivity {
       int count = 0;
       @Override
       public void run() {
-        if (count++ < 200) {
-          int subIteration = count % 3;
-          int imageId = subIteration == 0 ? R.drawable.moonhighres_icon : subIteration == 1 ? R.drawable.cloudhighres_icon : R.drawable.sunhighres_icon;
+        if (count++ < 187) {
+          // int subIteration = count % 3;
+          // int imageId = subIteration == 0 ? R.drawable.moonhighres_icon : subIteration == 1 ? R.drawable.cloudhighres_icon : R.drawable.sunhighres_icon;
+          //
+          // // Create Image and Text representing file that is going to be broadcasted
+          // imageView.setImageResource(imageId);
+          // textView.setText("File" + count + ".jpg");
 
-          // Create Image and Text representing file that is going to be broadcasted
-          imageView.setImageResource(imageId);
-          textView.setText("File" + count + ".jpg");
+          String nameString;
+          if(count < 10) {
+            nameString = "cine_0000" + count;
+          } else if(count < 100) {
+            nameString = "cine_000" + count;
+          } else {
+            nameString = "cine_00" + count;
+          }
+          int imageId = getResources().getIdentifier(nameString, "drawable", getPackageName());
 
           // Save Images and broadcast Content URIs
           createAndSendIntent(imageId, count);
 
           // Waits 100 ms between each iteration.
-          handler.postDelayed(this, 100);
+          handler.postDelayed(this, 10);
         }
       }
     };
