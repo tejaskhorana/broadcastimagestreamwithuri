@@ -1,6 +1,7 @@
 package com.example.applicationone;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -19,14 +20,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /** This Activity sends the broadcast. */
 public class MainActivity extends AppCompatActivity {
+
+  AssetManager assetManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    this.assetManager = getAssets();
 
     // Send a broadcast with a provided text.
     Button sendBroadcastButton = findViewById(R.id.sendBroadcast);
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
           int imageId = getResources().getIdentifier(nameString, "drawable", getPackageName());
 
           // Save Images and broadcast Content URIs
-          createAndSendIntent(imageId, count);
+          createAndSendIntent(imageId, count, nameString);
 
           // Waits 100 ms between each iteration.
           handler.postDelayed(this, 10);
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  private void createAndSendIntent(int imageId, int iteration) {
+  private void createAndSendIntent(int imageId, int iteration, String nameString) {
     Intent intent = new Intent();
     intent.setAction("com.example.applicationone.SCANNED_IMAGE");
 
@@ -85,18 +91,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Create file name.
-    String fileName = "File" + iteration + ".jpg"; // Change depending on file type.
+    String fileName = "File" + iteration + ".png"; // Change depending on file type.
     File imageFilePath = new File(imagesDirectory, fileName);
 
     // Save file to internal file system.
     FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(imageFilePath);
-      Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageId);
-      bitmap.compress(CompressFormat.JPEG, 100, fos); // Change depending on file type
+
+      // Option 1. Get image from resources. Makes bitmap larger.
+      //Log.w("ApplicationOne", "Getting image from res");
+      //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageId);
+
+      // Option 2. Get image from assets. Preserve image size.
+      Log.w("ApplicationOne", "Getting image from assets");
+      InputStream inputStream = assetManager.open(nameString + ".png");
+      Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+      // To make byte stream smaller, change PNG to JPEG (and make change to .png above). To make even more small, lower quality!
+      bitmap.compress(CompressFormat.PNG, 100, fos); // Change depending on file type
     } catch (FileNotFoundException e) {
       e.printStackTrace();
-    } finally {
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally
+     {
       try {
         fos.close();
       } catch (IOException e) {
