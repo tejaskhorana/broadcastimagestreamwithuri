@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
           // int imageId = subIteration == 0 ? R.drawable.moonhighres_icon : subIteration == 1 ? R.drawable.cloudhighres_icon : R.drawable.sunhighres_icon;
           //
           // // Create Image and Text representing file that is going to be broadcasted
-          // imageView.setImageResource(imageId);
+          //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageId);
           // textView.setText("File" + count + ".jpg");
 
           String nameString;
@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
           } else {
             nameString = "cine_00" + count;
           }
+
           int imageId = getResources().getIdentifier(nameString, "drawable", getPackageName());
+          imageView.setImageResource(imageId);
 
           // Save Images and broadcast Content URIs
           createAndSendIntent(imageId, count, nameString);
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
     // If URI retrieved, attach permissions and data type. Send broadcast.
     if (fileUri != null) {
-      grantUriPermission("com.example.applicationtwo", fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      grantUriPermission("com.google.android.apps.health.research.mobilehealth", fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
       intent.setDataAndType(fileUri, getContentResolver().getType(fileUri));
       Log.w("ApplicationOne", "Successfully sent broadcast");
       sendBroadcast(intent);
