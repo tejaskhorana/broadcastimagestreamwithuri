@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
           //
           // // Create Image and Text representing file that is going to be broadcasted
           //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageId);
-          // textView.setText("File" + count + ".jpg");
+          textView.setText("File" + count + ".jpg");
 
           String nameString;
           if(count < 10) {
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
     // If URI retrieved, attach permissions and data type. Send broadcast.
     if (fileUri != null) {
-      grantUriPermission("com.google.android.apps.health.research.mobilehealth", fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      grantUriPermission("com.example.applicationtwo", fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
       intent.setDataAndType(fileUri, getContentResolver().getType(fileUri));
       Log.w("ApplicationOne", "Successfully sent broadcast");
       sendBroadcast(intent);
