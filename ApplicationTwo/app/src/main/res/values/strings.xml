@@ -1,3 +1,4 @@
 <resources>
-  <string name="app_name">US Receiver</string>
+  <string name="app_name">Receiver</string>
+  <string name="accessibility_service_description">USR AS</string>
 </resources>

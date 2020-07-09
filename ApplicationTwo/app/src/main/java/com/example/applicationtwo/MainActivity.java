@@ -1,6 +1,7 @@
 package com.example.applicationtwo;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +12,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
     }
     myReceiver = new MyBroadcastReceiver();
     registerReceiver(myReceiver, filter);
+
+    findViewById(R.id.launch_app_button).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Launch a new activity on the side
+        Log.d("MY_APP_TAG", "Start activity!");
+      }
+    });
   }
 
   public class MyBroadcastReceiver extends BroadcastReceiver
