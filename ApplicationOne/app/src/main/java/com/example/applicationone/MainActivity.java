@@ -26,6 +26,7 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
 
   AssetManager assetManager;
+  boolean isRunning = true;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
     this.assetManager = getAssets();
 
     // Send a broadcast with a provided text.
-    Button sendBroadcastButton = findViewById(R.id.sendBroadcast);
+    final Button scanButton = findViewById(R.id.scanButton);
     final ImageView imageView = findViewById(R.id.image_view);
-    final TextView textView = findViewById(R.id.text_view);
+    //final TextView textView = findViewById(R.id.text_view);
     final Handler handler = new Handler();
     final Runnable runnable = new Runnable() {
       int count = 0;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // // Create Image and Text representing file that is going to be broadcasted
         //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageId);
 
-        textView.setText("File" + count + ".jpg");
+        //textView.setText("File" + count + ".jpg");
 
         String nameString;
         if(count < 10) {
@@ -72,13 +73,24 @@ public class MainActivity extends AppCompatActivity {
           handler.postDelayed(this, 10);
         } else {
           count = 0;
+          handler.postDelayed(this, 10);
         }
       }
     };
-    sendBroadcastButton.setOnClickListener(new OnClickListener() {
+    handler.post(runnable);
+    isRunning = true;
+
+    scanButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        handler.post(runnable);
+        if(isRunning) {
+          handler.removeCallbacks(runnable);
+          scanButton.setText("Unfreeze Scan");
+        } else {
+          handler.post(runnable);
+          scanButton.setText("Freeze Scan");
+        }
+        isRunning = !isRunning;
       }
     });
   }
