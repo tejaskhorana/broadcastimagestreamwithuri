@@ -10,9 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.content.FileProvider;
@@ -36,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     this.assetManager = getAssets();
 
     // Send a broadcast with a provided text.
-    final Button scanButton = findViewById(R.id.scanButton);
     final ImageView imageView = findViewById(R.id.image_view);
     //final TextView textView = findViewById(R.id.text_view);
     final Handler handler = new Handler();
@@ -80,15 +77,13 @@ public class MainActivity extends AppCompatActivity {
     handler.post(runnable);
     isRunning = true;
 
-    scanButton.setOnClickListener(new OnClickListener() {
+    imageView.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         if(isRunning) {
           handler.removeCallbacks(runnable);
-          scanButton.setText("Unfreeze Scan");
         } else {
           handler.post(runnable);
-          scanButton.setText("Freeze Scan");
         }
         isRunning = !isRunning;
       }
